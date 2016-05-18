@@ -1,4 +1,5 @@
-﻿"use strict";
+/// <binding AfterBuild='compile:js' />
+"use strict";
 
 var gulp = require('gulp');
 var webpack = require('webpack');

@@ -74,3 +74,5 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 JwtCoreTest.Html/node_modules/**
+JwtCoreTest.Html/Scripts/app/*.js
+JwtCoreTest.Html/Scripts/*.js
