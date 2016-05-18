@@ -6,7 +6,7 @@ using System.Web;
 
 namespace JwtCoreTest.ViewModels
 {
-    public class UserModel
+    public class UserVM
     {
         [Required]
         [Display(Name = "User name")]

@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtCoreTest", "JwtCoreTest\JwtCoreTest.csproj", "{27E387A9-FDE9-4288-A878-180A5E6F59DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtCoreTest.API", "JwtCoreTest.API\JwtCoreTest.API.csproj", "{77C65FA3-269E-456F-83DD-E5E6DCE00138}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtCoreTest.Model", "JwtCoreTest.Model\JwtCoreTest.Model.csproj", "{28459F2A-62B3-43AF-9183-12079E453728}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{27E387A9-FDE9-4288-A878-180A5E6F59DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27E387A9-FDE9-4288-A878-180A5E6F59DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27E387A9-FDE9-4288-A878-180A5E6F59DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77C65FA3-269E-456F-83DD-E5E6DCE00138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C65FA3-269E-456F-83DD-E5E6DCE00138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C65FA3-269E-456F-83DD-E5E6DCE00138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C65FA3-269E-456F-83DD-E5E6DCE00138}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28459F2A-62B3-43AF-9183-12079E453728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28459F2A-62B3-43AF-9183-12079E453728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28459F2A-62B3-43AF-9183-12079E453728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28459F2A-62B3-43AF-9183-12079E453728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

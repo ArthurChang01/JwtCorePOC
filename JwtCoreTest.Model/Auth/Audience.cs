@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.IdentityModel.Protocols.WSTrust;
-using System.IdentityModel.Tokens;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace JwtCoreTest.Models.Auth
 {
+    /// <summary>
+    /// 受眾
+    /// </summary>
     public class Audience : IdentityUser
     {
         [Required]
@@ -21,13 +19,11 @@ namespace JwtCoreTest.Models.Auth
         {
             var identity = new ClaimsIdentity("JWT");
 
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, this.Id));
             identity.AddClaim(new Claim(ClaimTypes.Name, this.UserName));
             identity.AddClaim(new Claim("sub", this.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "Manager"));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "Supervisor"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "User"));
 
-            //var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
-            // Add custom user claims here
             return identity;
         }
 

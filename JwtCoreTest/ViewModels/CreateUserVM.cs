@@ -6,7 +6,7 @@ using System.Web;
 
 namespace JwtCoreTest.ViewModels
 {
-    public class CreateUserBindingModel
+    public class CreateUserVM
     {
         [Required]
         [EmailAddress]
@@ -43,7 +43,6 @@ namespace JwtCoreTest.ViewModels
 
     public class ChangePasswordBindingModel
     {
-
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]

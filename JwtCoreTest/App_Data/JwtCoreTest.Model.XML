@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JwtCoreTest.Model</name>
+    </assembly>
+    <members>
+        <member name="T:JwtCoreTest.Models.Auth.Audience">
+            <summary>
+            受眾
+            </summary>
+        </member>
+    </members>
+</doc>

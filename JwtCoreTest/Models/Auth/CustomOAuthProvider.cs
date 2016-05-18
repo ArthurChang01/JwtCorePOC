@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using JwtCoreTest.Misc.Proxy;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -14,6 +15,8 @@ namespace JwtCoreTest.Models.Auth
 {
     public class CustomOAuthProvider : OAuthAuthorizationServerProvider
     {
+        AuthProxy proxy = new AuthProxy();
+
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
@@ -26,7 +29,9 @@ namespace JwtCoreTest.Models.Auth
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            Audience user = AudiencesStore.Find(context.UserName, context.Password);
+            //Audience user = AudiencesStore.Find(context.UserName, context.Password);
+
+            Audience user = await proxy.Login(context.UserName, context.Password);
 
             if (user == null)
             {

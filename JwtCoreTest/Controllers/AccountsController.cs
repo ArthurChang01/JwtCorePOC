@@ -1,4 +1,5 @@
-﻿using JwtCoreTest.Models.Auth;
+﻿using JwtCoreTest.Misc.Proxy;
+using JwtCoreTest.Models.Auth;
 using JwtCoreTest.Models.Infrastructure;
 using JwtCoreTest.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -20,6 +21,8 @@ namespace JwtCoreTest.Controllers
     [RoutePrefix("api/accounts")]
     public class AccountsController : BaseApiController
     {
+        private AuthProxy proxy = new AuthProxy();
+
         /// <summary>
         /// Login
         /// </summary>
@@ -58,10 +61,10 @@ namespace JwtCoreTest.Controllers
         [Authorize]
         [Route("user/{id:guid}", Name = "GetUserById")]
         [ResponseType(typeof(UserReturnModel))]
-        public IHttpActionResult GetUser(string Id)
+        public async Task<IHttpActionResult> GetUser(string Id)
         {
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var user = AudiencesStore.FindByIdAsync(Id);
+            var user = await proxy.GetUser(Id);
 
             if (user != null)
             {
@@ -80,10 +83,10 @@ namespace JwtCoreTest.Controllers
         [Authorize]
         [Route("user/{username}")]
         [ResponseType(typeof(Audience))]
-        public IHttpActionResult GetUserByName(string username)
+        public async Task<IHttpActionResult> GetUserByName(string username)
         {
             //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var user = AudiencesStore.FindByNameAsync(username);
+            var user = await proxy.GetUserByName(username);
 
             if (user != null)
             {
@@ -102,8 +105,9 @@ namespace JwtCoreTest.Controllers
         [AllowAnonymous]
         [Route("create")]
         [ResponseType(typeof(IHttpActionResult))]
-        public IHttpActionResult CreateUser(CreateUserBindingModel createUserModel)
+        public async Task<IHttpActionResult> CreateUser(CreateUserVM createUserModel)
         {
+            string id = string.Empty;
 
             if (!ModelState.IsValid)
             {
@@ -115,25 +119,20 @@ namespace JwtCoreTest.Controllers
                 UserName = createUserModel.Username,
                 Email = createUserModel.Email,
                 JoinDate = DateTime.Now.Date,
+                PasswordHash=createUserModel.Password,
+                EmailConfirmed=true
             };
 
-            IdentityResult addUserResult = null;
-
             try {
-                addUserResult = AudiencesStore.CreateAsync(user, createUserModel.Password);
+                id = await proxy.Register(user);
             }
             catch (Exception ex)
             {
-                throw ex;
-            }
-            
-
-            if (!addUserResult.Succeeded)
-            {
-                return GetErrorResult(addUserResult);
+                ex = ex.InnerException ?? ex;
+                return InternalServerError(ex);
             }
 
-            Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+            Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = id }));
 
             return Created(locationHeader, TheModelFactory.Create(user));
 
@@ -146,22 +145,24 @@ namespace JwtCoreTest.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("ChangePassword")]
-        [ResponseType(typeof(IHttpActionResult))]
-        public IHttpActionResult ChangePassword(ChangePasswordBindingModel model)
+        [ResponseType(typeof(bool))]
+        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = AudiencesStore.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            string id = User.Identity.GetUserId();
 
-            if (!result.Succeeded)
+            bool blResult = await proxy.ChangePassword(id, model.NewPassword);
+
+            if (!blResult)
             {
-                return GetErrorResult(result);
+                return BadRequest();
             }
 
-            return Ok();
+            return Ok(blResult);
         }
 
         /// <summary>
@@ -170,29 +171,15 @@ namespace JwtCoreTest.Controllers
         /// <param name="id">欲刪除帳戶的Id</param>
         /// <returns>是否刪除成功</returns>
         [Authorize]
-        [Route("user/{id:guid}")]
-        [ResponseType(typeof(IHttpActionResult))]
-        public IHttpActionResult DeleteUser(string id)
+        [Route("user")]
+        [ResponseType(typeof(bool))]
+        public async Task<IHttpActionResult> DeleteUser(string id)
         {
+            var appUser = await proxy.GetUser(id);
 
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            bool blResult = await proxy.DeleteUser(id);
 
-            var appUser = AudiencesStore.FindByIdAsync(id);
-
-            if (appUser != null)
-            {
-                IdentityResult result = AudiencesStore.DeleteAsync(appUser);
-
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-
-                return Ok();
-
-            }
-
-            return NotFound();
+            return Ok(blResult);
 
         }
 
