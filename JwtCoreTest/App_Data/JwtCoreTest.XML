@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JwtCoreTest</name>
+    </assembly>
+    <members>
+        <member name="M:JwtCoreTest.Controllers.AccountsController.GetLogin(System.String,System.String)">
+            <summary>
+            Login
+            </summary>
+            <param name="userName">使用者帳戶</param>
+            <param name="password">密碼</param>
+            <returns>Token</returns>
+        </member>
+        <member name="M:JwtCoreTest.Controllers.AccountsController.GetUser(System.String)">
+            <summary>
+            依Id取得使用者資訊
+            </summary>
+            <param name="Id">使用者Id</param>
+            <returns>使用者資訊</returns>
+        </member>
+        <member name="M:JwtCoreTest.Controllers.AccountsController.GetUserByName(System.String)">
+            <summary>
+            依使用者名稱取得使用者資訊
+            </summary>
+            <param name="username">使用者名稱</param>
+            <returns>使用者資訊</returns>
+        </member>
+        <member name="M:JwtCoreTest.Controllers.AccountsController.CreateUser(JwtCoreTest.ViewModels.CreateUserBindingModel)">
+            <summary>
+            創建使用者
+            </summary>
+            <param name="createUserModel">帳戶基本資訊</param>
+            <returns>是否創建成功</returns>
+        </member>
+        <member name="M:JwtCoreTest.Controllers.AccountsController.ChangePassword(JwtCoreTest.ViewModels.ChangePasswordBindingModel)">
+            <summary>
+            修改帳戶密碼
+            </summary>
+            <param name="model">密碼資訊(舊,新)</param>
+            <returns></returns>
+        </member>
+        <member name="M:JwtCoreTest.Controllers.AccountsController.DeleteUser(System.String)">
+            <summary>
+            刪除使用者
+            </summary>
+            <param name="id">欲刪除帳戶的Id</param>
+            <returns>是否刪除成功</returns>
+        </member>
+        <member name="M:JwtCoreTest.Controllers.TestController.Tester">
+            <summary>
+            Tester
+            </summary>
+            <returns>字串</returns>
+        </member>
+        <member name="T:JwtCoreTest.Misc.Swagger.FromHeaderBinding">
+            <summary>
+            ModelBinder : 取得Request Header中指定的值
+            </summary>
+        </member>
+        <member name="T:JwtCoreTest.Misc.Swagger.HandleFromHeaderParams">
+            <summary>
+            提供Swagger對應FromHeaderAttribute的資訊顯示
+            </summary>
+        </member>
+        <member name="T:JwtCoreTest.Misc.Swagger.SwaggerHeaderParameter">
+            <summary>
+            添加Request Header所需欄位
+            </summary>
+        </member>
+    </members>
+</doc>
