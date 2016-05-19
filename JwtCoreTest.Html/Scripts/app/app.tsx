@@ -15,18 +15,27 @@ export class LogIn {
 
 
 export default class AppComponent extends React.Component<any, any>{
-    componentWillMount() {
-        let dto:LogIn = new LogIn();
-        dto.UserName = "string";
-        dto.Password = "P@ssw0rd";
+    private inputs: { username?: HTMLInputElement; password?:HTMLInputElement } = {};
 
-        $.getJSON(`http://localhost:15267/api/Accounts?userName=${dto.UserName}&password=${dto.Password}`).done(function (data) {
-            console.log(data.access_token);
+    _login(e) {
+        e.preventDefault();
+
+        let username = this.inputs.username.value,
+            password = this.inputs.password.value;
+        let url = `http://localhost:15267/api/Accounts?userName=${username}&password=${password}`;
+        $.getJSON(url).done((resp) => {
+            alert(resp.access_token);
         });
     }
 
     render() {
-        return <div>Hi</div>;
+        return <div>
+                <form onSubmit={this._login.bind(this)}>
+                <input type="text" placeholder="UserName" ref={username => this.inputs.username = username} />
+                <input type="password" placeholder="Password" ref={password => this.inputs.password = password} />
+                    <input type="submit" value="submit" />
+                </form>
+            </div>;
     }
 }
 
