@@ -7,13 +7,6 @@ import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import 'jquery-CORS';
 
-export class LogIn {
-    public UserName: string;
-
-    public Password: string;
-}
-
-
 export default class AppComponent extends React.Component<any, any>{
     private inputs: { username?: HTMLInputElement; password?:HTMLInputElement } = {};
 

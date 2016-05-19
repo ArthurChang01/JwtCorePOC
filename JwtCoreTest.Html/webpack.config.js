@@ -1,5 +1,6 @@
 ﻿var webpack = require("webpack");
-var vendors_dir = __dirname + "/Scripts/vendors";
+var path = require('path');
+var vendors_dir = path.join(__dirname,"/Scripts/vendors");
 
 var config = {
     addVendor: function (name, path) {
@@ -31,7 +32,8 @@ var config = {
             jQuery: "jquery",
             'window.jQuery': 'jquery'
         }),
-        new webpack.optimize.CommonsChunkPlugin("vendors", "vendors.js")
+        new webpack.optimize.CommonsChunkPlugin("vendors", "vendors.js"),
+        new webpack.optimize.UglifyJsPlugin({ compress: {warnings:false}})
     ],
     noParse: [
         /[\/\\]node_modules.*/,
