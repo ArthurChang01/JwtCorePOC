@@ -76,3 +76,4 @@ _[Ss]cripts
 JwtCoreTest.Html/node_modules/**
 JwtCoreTest.Html/Scripts/app/*.js
 JwtCoreTest.Html/Scripts/*.js
+JwtCoreTest.Html/Scripts/app/*/*.js

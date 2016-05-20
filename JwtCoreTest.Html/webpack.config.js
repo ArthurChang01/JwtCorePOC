@@ -32,8 +32,7 @@ var config = {
             jQuery: "jquery",
             'window.jQuery': 'jquery'
         }),
-        new webpack.optimize.CommonsChunkPlugin("vendors", "vendors.js"),
-        new webpack.optimize.UglifyJsPlugin({ compress: {warnings:false}})
+        new webpack.optimize.CommonsChunkPlugin("vendors", "vendors.js")
     ],
     noParse: [
         /[\/\\]node_modules.*/,

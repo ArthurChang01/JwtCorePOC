@@ -1,4 +1,3 @@
-
 /// <reference path="react/react.d.ts" />
 /// <reference path="jquery/jquery.d.ts" />
 /// <reference path="toastr/toastr.d.ts" />
@@ -8,3 +7,9 @@
 /// <reference path="react-router/react-router.d.ts" />
 /// <reference path="bootstrap/bootstrap.d.ts" />
 /// <reference path="react/react-dom.d.ts" />
+/// <reference path="redux/redux.d.ts" />
+/// <reference path="react-redux/react-redux.d.ts" />
+/// <reference path="react-router-redux/react-router-redux.d.ts" />
+/// <reference path="react-router/history.d.ts" />
+/// <reference path="react-router/react-router.d.ts" />
+/// <reference path="object-assign/object-assign.d.ts" />

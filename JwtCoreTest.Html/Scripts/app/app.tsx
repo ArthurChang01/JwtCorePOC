@@ -4,32 +4,35 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as $ from 'jquery';
-import 'jquery-CORS';
+import {createStore, combineReducers} from 'redux';
+import { Provider} from 'react-redux';
+import {Router, Route, IndexRoute, browserHistory} from 'react-router';
+import * as ReactRouterRedux from 'react-router-redux';
 
-export default class AppComponent extends React.Component<any, any>{
-    private inputs: { username?: HTMLInputElement; password?:HTMLInputElement } = {};
+import {reducer} from './reducers/count';
+import * as action from './actions/count';
+import {App} from './components/App';
+import IndexPage from './components/IndexPage';
+import NextPage from './components/NextPAge';
 
-    _login(e) {
-        e.preventDefault();
+const reducers = combineReducers({
+    reducer,
+    routing: ReactRouterRedux.routerReducer
+});
 
-        let username = this.inputs.username.value,
-            password = this.inputs.password.value;
-        let url = `http://localhost:15267/api/Accounts?userName=${username}&password=${password}`;
-        $.getJSON(url).done((resp) => {
-            alert(resp.access_token);
-        });
-    }
+const store = createStore(reducers);
+const history = ReactRouterRedux.syncHistoryWithStore(browserHistory, store);
 
-    render() {
-        return <div>
-                <form onSubmit={this._login.bind(this)}>
-                <input type="text" placeholder="UserName" ref={username => this.inputs.username = username} />
-                <input type="password" placeholder="Password" ref={password => this.inputs.password = password} />
-                    <input type="submit" value="submit" />
-                </form>
-            </div>;
-    }
-}
-
-ReactDOM.render(<AppComponent />, document.getElementById('content'));
+ReactDOM.render(
+    <Provider store={store}>
+        <div>
+            <Router history={history}>
+                <Route path="/" component={App}>
+                    <IndexRoute component={IndexPage} />
+                </Route>   
+                <Route path="/first" component={IndexPage} />
+                <Route path="/next" component={NextPage} />
+            </Router>
+        </div>
+    </Provider>
+    ,document.getElementById('content'));
