@@ -11,7 +11,7 @@ namespace JwtCoreTest.Misc.Proxy
 {
     public class AuthProxy
     {
-        private RestClient client = new RestClient(ConfigurationManager.AppSettings["ac:APIUrl"]);
+        private RestClient client = new RestClient(ConfigurationManager.AppSettings["as:Domain"]);
         private string resourceUrl = string.Empty;
 
         public async Task<Audience> Login(string userName, string password) {

@@ -8,13 +8,20 @@ using System.Web;
 
 namespace JwtCoreTest.API.Models.Auth
 {
-    public class AuthContext:IdentityDbContext
+    public class AuthContext: IdentityDbContext<Audience>
     {
         public AuthContext() : base("AuthContext")
         {
         }
 
-        public DbSet<Audience> Audiences { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<IdentityUser>()
+                .ToTable("Users");
+            modelBuilder.Entity<Audience>()
+                .ToTable("Users");
+        }
     }
 }

@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Data.Entity;
 using JwtCoreTest.API.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace JwtCoreTest.API.Controllers
 {
@@ -24,7 +26,19 @@ namespace JwtCoreTest.API.Controllers
         {
             Audience ad = null;
 
-            ad = await _ctx.Audiences.FirstOrDefaultAsync(o => o.UserName.Equals(vm.UserName) && o.PasswordHash.Equals(vm.Password));
+            try
+            {
+                using (AuthContext ctx = new AuthContext())
+                using (var um = new UserManager<Audience>(new UserStore<Audience>(ctx)))
+                {
+                    ad=await um.FindAsync(vm.UserName, vm.Password);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
 
             if (ad == null)
                 return NotFound();
@@ -39,7 +53,11 @@ namespace JwtCoreTest.API.Controllers
             Audience ad = null;
 
             try {
-                ad = await _ctx.Audiences.FindAsync(Id);
+                using (AuthContext ctx = new AuthContext())
+                using (var um = new UserManager<Audience>(new UserStore<Audience>(ctx)))
+                {
+                    ad = await um.FindByIdAsync(Id);
+                }
             }
             catch (Exception ex)
             {
@@ -60,7 +78,11 @@ namespace JwtCoreTest.API.Controllers
 
             try
             {
-                ad = await _ctx.Audiences.FirstOrDefaultAsync(o => o.UserName.Equals(username));
+                using (AuthContext ctx = new AuthContext())
+                using (var um = new UserManager<Audience>(new UserStore<Audience>(ctx)))
+                {
+                    ad = await um.FindByNameAsync(username);
+                }
             }
             catch (Exception ex)
             {
@@ -78,8 +100,14 @@ namespace JwtCoreTest.API.Controllers
         public async Task<IHttpActionResult> PostUser(Audience createUserModel)
         {
             try {
-                _ctx.Audiences.Add(createUserModel);
-                await _ctx.SaveChangesAsync();
+                using (AuthContext ctx = new AuthContext())
+                using (var um = new UserManager<Audience>(new UserStore<Audience>(ctx)))
+                {
+                    await um.CreateAsync(createUserModel,createUserModel.PasswordHash);
+
+                }
+          
+                //await _ctx.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -120,15 +148,20 @@ namespace JwtCoreTest.API.Controllers
         {
             bool blResult = true;
 
-            Audience ad = await _ctx.Audiences.FindAsync(id);
-
-            if (ad == null)
-                return BadRequest();
+            Audience ad = null;
 
             try
             {
-                this._ctx.Entry<Audience>(ad).State = EntityState.Deleted;
-                await _ctx.SaveChangesAsync();
+                using (AuthContext ctx = new AuthContext())
+                using (var um = new UserManager<Audience>(new UserStore<Audience>(ctx)))
+                {
+                    ad = await um.FindByIdAsync(id);
+
+                    if (ad == null)
+                        return BadRequest();
+
+                    await um.DeleteAsync(ad);
+                }
             }
             catch (Exception ex)
             {
